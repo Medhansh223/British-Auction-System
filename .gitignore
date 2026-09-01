@@ -1,0 +1,17 @@
+.DS_Store
+.idea/
+.vscode/
+
+# Backend
+backend/target/
+backend/*.iml
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/.env

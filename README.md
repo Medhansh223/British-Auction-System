@@ -1,0 +1,106 @@
+# Request for Quotation (RFQ) - British Auction System
+
+A full-stack, enterprise-grade **Request for Quotation (RFQ) System** utilizing **British Auction** mechanics to combat last-second bidding (sniping) in logistics and freight procurement.
+
+This system allows Buyers (shippers) to provision auctions for freight routes, while Suppliers (carriers) compete to offer the lowest total charge. The platform dynamically extends the auction clock if a bid is placed near the deadline, based on configurable anti-sniping strategies.
+
+---
+
+## 🚀 Technology Stack
+
+- **Backend:** Java 17, Spring Boot 3.3.3, Spring Data JPA, OpenAPI (Swagger)
+- **Frontend:** React 18, TypeScript, Vite, custom deep-space glassmorphism UI
+- **Database:** PostgreSQL 16 (production/Docker) & H2 (in-memory/testing)
+
+---
+
+## 🏗️ High-Level Design (HLD) & Architecture
+
+The system uses a clean, multi-layered architecture separating presentation, API routing, business logic, and persistence. The backend heavily utilizes event-driven mechanisms to decouple core transaction ingestion from logging.
+
+![High-Level Design](./HLD.png)
+
+---
+
+## 🗄️ Database Schema Design
+
+The persistence layer uses a strict relational design with foreign key constraints to maintain data integrity.
+
+![Database Schema Design](./DATABASE_SCHEMA.png)
+
+---
+
+## 🛠️ How to Run Locally
+
+### Prerequisites
+- Java 17
+- Node.js 18+
+- Docker (Optional, if using PostgreSQL)
+- Maven
+
+### 1. Database Setup
+
+You can run the application with either a robust **PostgreSQL** database (via Docker) or an embedded in-memory **H2** database.
+
+**Option A: PostgreSQL via Docker (Recommended for production emulation)**
+Run this specific Docker command to spin up a Postgres 16 instance with the correct credentials:
+```bash
+docker run -d --name auction-postgres \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgrespassword \
+  -e POSTGRES_DB=auction_db \
+  postgres:16
+```
+*(Alternatively, you can just run `docker compose up -d` in the `backend/` directory).*
+
+**Option B: In-Memory H2 Database (For quick testing)**
+No installation required. When starting the backend in Step 2, simply append the `h2` active profile flag. The H2 console will be accessible at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:auction_db`).
+
+### 2. Start the Backend (Spring Boot)
+Open a new terminal and navigate to the `backend` directory:
+```bash
+cd backend
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17" # Replace with your Java 17 path if needed
+export PATH="$JAVA_HOME/bin:$PATH"
+
+mvn clean install
+
+# If using PostgreSQL (Default Profile):
+mvn spring-boot:run
+
+# If using H2 Database (In-Memory Profile):
+mvn spring-boot:run -Dspring-boot.run.profiles=h2
+```
+- **REST API Base URL:** `http://localhost:8080/api/v1/rfqs`
+- **Swagger UI (Interactive API Docs):** `http://localhost:8080/swagger-ui.html`
+
+### 3. Start the Frontend (React + Vite)
+Open another terminal and navigate to the `frontend` directory:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+- **Web Dashboard:** `http://localhost:5173/`
+
+---
+
+## 📖 Design Patterns Used
+
+1. **Strategy Pattern (`ExtensionTriggerStrategy`):** Determines *when* an auction should be extended. Adheres strictly to the Open/Closed Principle (OCP), allowing new trigger rules (like `AnyBidExtensionStrategy` or `LowestBidderChangeExtensionStrategy`) to be added without modifying the core bidding logic.
+2. **Factory Pattern (`ExtensionStrategyFactory`):** Centralizes the creation and resolution of the correct strategy implementation based on the RFQ's configuration (`ExtensionTriggerType`). It dynamically provides the service layer with the exact strategy needed at runtime.
+3. **Observer Pattern (`ApplicationEventPublisher`):** Decouples the core quote ingestion from secondary background actions (like evaluating time extensions or writing persistent audit logs). When a bid is ingested, a `BidSubmittedEvent` is emitted and consumed asynchronously by listeners.
+4. **Builder Pattern (`@Builder` via Lombok):** Used extensively across all DTOs (Data Transfer Objects), Request/Response objects, and Entities (like `RfqEntity.builder().build()`). This allows for clean, fluent, and immutable object construction without relying on telescoping constructors.
+
+---
+
+## 🧪 Testing
+
+The backend includes a comprehensive suite of unit tests verifying the auction timelines, extension caps, rank calculations, and quote validations.
+
+To run the tests:
+```bash
+cd backend
+mvn test
+```

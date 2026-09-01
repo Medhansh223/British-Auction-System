@@ -14,6 +14,48 @@ This system allows Buyers (shippers) to provision auctions for freight routes, w
 
 ---
 
+## 📁 Project Structure
+
+The repository is structured as a monorepo containing both the Spring Boot backend and the React frontend.
+
+```text
+GO_COMET_ASSIGNEMENT/
+├── backend/                              # Spring Boot Application
+│   ├── src/main/java/com/gocomet/auction/
+│   │   ├── config/                       # OpenAPI/Swagger & WebMvc config
+│   │   ├── controller/                   # REST API Endpoints (RFQ, Quotes, Audit)
+│   │   ├── dto/                          # Data Transfer Objects & Event payloads
+│   │   ├── entity/                       # JPA Entities (Rfq, Quote, AuditLog)
+│   │   ├── enums/                        # Constants and Status Enums
+│   │   ├── event/                        # Spring ApplicationEvents (Observer Pattern)
+│   │   ├── exception/                    # Global Exception Handlers
+│   │   ├── repository/                   # Spring Data JPA Repositories
+│   │   ├── service/                      # Core Business Logic & Calculations
+│   │   └── strategy/                     # Strategy Pattern for Auction Extensions
+│   ├── src/main/resources/
+│   │   ├── application.yml               # Application configuration
+│   │   └── schema.sql                    # Database Initialization (H2/Postgres)
+│   ├── src/test/                         # JUnit & Mockito Unit Tests
+│   ├── pom.xml                           # Maven Dependencies
+│   └── docker-compose.yml                # Postgres Docker configuration
+│
+├── frontend/                             # React Web Application
+│   ├── src/
+│   │   ├── api/                          # Axios API Client integrations
+│   │   ├── components/                   # Reusable UI Components (Modals, Timers, Dashboard)
+│   │   ├── styles/                       # CSS (Variables, Components, Globals)
+│   │   ├── types/                        # TypeScript Interfaces
+│   │   └── utils/                        # Formatting and Date utilities
+│   ├── package.json                      # NPM Dependencies
+│   └── vite.config.ts                    # Vite Configuration
+│
+├── HLD.png                               # High Level Design Architecture Diagram
+├── DATABASE_SCHEMA.png                   # Database Entity-Relationship Diagram
+└── README.md                             # Project Documentation
+```
+
+---
+
 ## 🏗️ High-Level Design (HLD) & Architecture
 
 The system uses a clean, multi-layered architecture separating presentation, API routing, business logic, and persistence. The backend heavily utilizes event-driven mechanisms to decouple core transaction ingestion from logging.

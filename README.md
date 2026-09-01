@@ -89,8 +89,11 @@ npm run dev
 ## 📖 Design Patterns Used
 
 1. **Strategy Pattern (`ExtensionTriggerStrategy`):** Determines *when* an auction should be extended. Adheres strictly to the Open/Closed Principle (OCP), allowing new trigger rules (like `AnyBidExtensionStrategy` or `LowestBidderChangeExtensionStrategy`) to be added without modifying the core bidding logic.
+
 2. **Factory Pattern (`ExtensionStrategyFactory`):** Centralizes the creation and resolution of the correct strategy implementation based on the RFQ's configuration (`ExtensionTriggerType`). It dynamically provides the service layer with the exact strategy needed at runtime.
+
 3. **Observer Pattern (`ApplicationEventPublisher`):** Decouples the core quote ingestion from secondary background actions (like evaluating time extensions or writing persistent audit logs). When a bid is ingested, a `BidSubmittedEvent` is emitted and consumed asynchronously by listeners.
+
 4. **Builder Pattern (`@Builder` via Lombok):** Used extensively across all DTOs (Data Transfer Objects), Request/Response objects, and Entities (like `RfqEntity.builder().build()`). This allows for clean, fluent, and immutable object construction without relying on telescoping constructors.
 
 ---
@@ -100,10 +103,30 @@ npm run dev
 The backend architecture rigorously adheres to the five core principles of object-oriented design:
 
 1. **Single Responsibility Principle (SRP):** Every class has a strictly defined, single job. For instance, `SupplierRankingService` is only responsible for calculating carrier ranks, `AuctionAuditLogService` strictly writes immutable logs, and `RfqManagementService` handles the broader auction lifecycle state.
+
 2. **Open/Closed Principle (OCP):** The extension evaluation engine is completely open for extension but closed for modification. If a new business requirement mandates a new rule (e.g., *extend only if bid drops by 10%*), a new strategy can be added without modifying a single line of `AuctionExtensionService`.
+
 3. **Liskov Substitution Principle (LSP):** Any concrete implementation of `ExtensionTriggerStrategy` can be dynamically substituted by the `ExtensionStrategyFactory` at runtime without altering the correctness or flow of the core program.
+
 4. **Interface Segregation Principle (ISP):** Instead of bloated interfaces, the application relies on focused, purpose-specific Spring Data interfaces (`QuoteRepository`, `RfqRepository`) keeping the persistence contracts tight and clean.
+
 5. **Dependency Inversion Principle (DIP):** High-level business logic modules (like `QuoteSubmissionService`) do not depend on low-level modules. Instead, they depend entirely on abstractions (interfaces) injected via Spring's IoC container (Constructor Injection).
+
+---
+
+## 🔮 Future Scope & Enhancements
+
+While the core British Auction engine is highly functional, the platform is designed to scale with the following future enhancements:
+
+1. **WebSockets (STOMP) for Real-Time Sync:** Transitioning from client-side polling/timers to a fully reactive WebSocket architecture. This will instantly push bid updates and timer extensions to all connected suppliers simultaneously.
+
+2. **Role-Based Authentication (Spring Security + JWT):** Enforcing strict access controls where only authenticated Buyers can create RFQs, and authenticated Suppliers can only bid on RFQs they are invited to.
+
+3. **Redis Caching Layer:** Implementing a distributed cache (like Redis) for the `SupplierRankingService` to drastically reduce PostgreSQL load during intense, high-frequency bidding wars in the final seconds of an auction.
+
+4. **Auto-Bidding (Proxy Bidding) Agents:** Allowing suppliers to set a absolute "Floor Price". The system would then automatically submit counter-bids on their behalf to maintain L1 status until their floor price is reached.
+
+5. **Advanced Data Analytics:** Integrating Apache Kafka to stream auction activity logs into a data warehouse (like BigQuery) to analyze supplier behavior, generate cost-saving reports, and predict optimal freight pricing.
 
 ---
 

@@ -95,6 +95,18 @@ npm run dev
 
 ---
 
+## 📐 SOLID Principles Applied
+
+The backend architecture rigorously adheres to the five core principles of object-oriented design:
+
+1. **Single Responsibility Principle (SRP):** Every class has a strictly defined, single job. For instance, `SupplierRankingService` is only responsible for calculating carrier ranks, `AuctionAuditLogService` strictly writes immutable logs, and `RfqManagementService` handles the broader auction lifecycle state.
+2. **Open/Closed Principle (OCP):** The extension evaluation engine is completely open for extension but closed for modification. If a new business requirement mandates a new rule (e.g., *extend only if bid drops by 10%*), a new strategy can be added without modifying a single line of `AuctionExtensionService`.
+3. **Liskov Substitution Principle (LSP):** Any concrete implementation of `ExtensionTriggerStrategy` can be dynamically substituted by the `ExtensionStrategyFactory` at runtime without altering the correctness or flow of the core program.
+4. **Interface Segregation Principle (ISP):** Instead of bloated interfaces, the application relies on focused, purpose-specific Spring Data interfaces (`QuoteRepository`, `RfqRepository`) keeping the persistence contracts tight and clean.
+5. **Dependency Inversion Principle (DIP):** High-level business logic modules (like `QuoteSubmissionService`) do not depend on low-level modules. Instead, they depend entirely on abstractions (interfaces) injected via Spring's IoC container (Constructor Injection).
+
+---
+
 ## 🧪 Testing
 
 The backend includes a comprehensive suite of unit tests verifying the auction timelines, extension caps, rank calculations, and quote validations.

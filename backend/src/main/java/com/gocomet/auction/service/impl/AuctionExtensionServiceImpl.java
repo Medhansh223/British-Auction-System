@@ -8,7 +8,7 @@ import com.gocomet.auction.enums.AuctionStatus;
 import com.gocomet.auction.event.AuctionExtendedEvent;
 import com.gocomet.auction.repository.RfqRepository;
 import com.gocomet.auction.service.AuctionExtensionService;
-import com.gocomet.auction.strategy.ExtensionStrategyFactory;
+import com.gocomet.auction.factory.ExtensionStrategyFactory;
 import com.gocomet.auction.strategy.ExtensionTriggerStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

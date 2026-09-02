@@ -1,9 +1,8 @@
-package com.gocomet.auction.strategy.impl;
+package com.gocomet.auction.strategy;
 
 import com.gocomet.auction.constant.RfqConstants;
 import com.gocomet.auction.dto.event.BidSubmissionContext;
 import com.gocomet.auction.enums.ExtensionTriggerType;
-import com.gocomet.auction.strategy.ExtensionTriggerStrategy;
 import org.springframework.stereotype.Component;
 
 @Component

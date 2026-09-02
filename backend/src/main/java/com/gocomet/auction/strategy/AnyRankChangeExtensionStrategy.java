@@ -1,32 +1,31 @@
-package com.gocomet.auction.strategy.impl;
+package com.gocomet.auction.strategy;
 
 import com.gocomet.auction.dto.event.BidSubmissionContext;
 import com.gocomet.auction.enums.ExtensionTriggerType;
-import com.gocomet.auction.strategy.ExtensionTriggerStrategy;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AnyBidExtensionStrategy implements ExtensionTriggerStrategy {
+public class AnyRankChangeExtensionStrategy implements ExtensionTriggerStrategy {
 
     @Override
     public ExtensionTriggerType getTriggerType() {
-        return ExtensionTriggerType.ANY_BID;
+        return ExtensionTriggerType.ANY_RANK_CHANGE;
     }
 
     @Override
     public boolean shouldExtend(BidSubmissionContext context) {
 
-        return context != null && context.getNewQuote() != null;
+        return context != null && context.isAnyRankChanged();
     }
 
     @Override
     public String buildExtensionReason(BidSubmissionContext context) {
         return String.format(
-        "Auction extended by %d minutes: Bid received from '%s' ($%s) during the last %d-minute trigger window.",
+        "Auction extended by %d minutes: Supplier ranking changed (Carrier '%s' achieved rank L%d with $%s) during the trigger window.",
         context.getRfq().getExtensionDurationMinutes(),
         context.getNewQuote().getCarrierName(),
-        context.getNewQuote().getTotalAmount().toPlainString(),
-        context.getRfq().getTriggerWindowMinutes()
+        context.getNewQuote().getSupplierRank(),
+        context.getNewQuote().getTotalAmount().toPlainString()
     );
     }
 }

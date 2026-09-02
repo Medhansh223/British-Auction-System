@@ -1,7 +1,8 @@
-package com.gocomet.auction.strategy;
+package com.gocomet.auction.factory;
 
 import com.gocomet.auction.constant.ExceptionMessageConstants;
 import com.gocomet.auction.enums.ExtensionTriggerType;
+import com.gocomet.auction.strategy.ExtensionTriggerStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;

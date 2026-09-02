@@ -29,9 +29,10 @@ GO_COMET_ASSIGNEMENT/
 │   │   ├── enums/                        # Constants and Status Enums
 │   │   ├── event/                        # Spring ApplicationEvents (Observer Pattern)
 │   │   ├── exception/                    # Global Exception Handlers
+│   │   ├── factory/                      # Factory Pattern (ExtensionStrategyFactory)
 │   │   ├── repository/                   # Spring Data JPA Repositories
 │   │   ├── service/                      # Core Business Logic & Calculations
-│   │   └── strategy/                     # Strategy Pattern for Auction Extensions
+│   │   └── strategy/                     # Strategy Pattern implementations
 │   ├── src/main/resources/
 │   │   ├── application.yml               # Application configuration
 │   │   └── schema.sql                    # Database Initialization (H2/Postgres)

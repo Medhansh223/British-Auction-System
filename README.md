@@ -167,10 +167,6 @@ While the core British Auction engine is highly functional, the platform is desi
 
 3. **Redis Caching Layer:** Implementing a distributed cache (like Redis) for the `SupplierRankingService` to drastically reduce PostgreSQL load during intense, high-frequency bidding wars in the final seconds of an auction.
 
-4. **Auto-Bidding (Proxy Bidding) Agents:** Allowing suppliers to set a absolute "Floor Price". The system would then automatically submit counter-bids on their behalf to maintain L1 status until their floor price is reached.
-
-5. **Advanced Data Analytics:** Integrating Apache Kafka to stream auction activity logs into a data warehouse (like BigQuery) to analyze supplier behavior, generate cost-saving reports, and predict optimal freight pricing.
-
 ---
 
 ## 🧪 Testing

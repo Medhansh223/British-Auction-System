@@ -157,6 +157,18 @@ The backend architecture rigorously adheres to the five core principles of objec
 
 ---
 
+## ⚖️ Architectural Trade-offs
+
+The system purposefully utilizes two different communication patterns, balancing complexity with scale:
+
+1. **Direct Method Calls (Tight Coupling):** Used for low-frequency, administrative tasks like RFQ Creation (`RfqManagementService`). This provides maximum readability and simplicity where performance isn't a bottleneck.
+
+2. **In-Memory Events (Loose Coupling):** Used for high-frequency, complex tasks like Bidding (`QuoteSubmissionService`) via Spring's `ApplicationEventPublisher`. This cleanly decouples core bidding logic from side-effects (like Audit Logging), keeping the critical path fast and modular.
+
+3. **Message Brokers:** If the application scales to a true Microservices architecture, the in-memory events can be easily swapped for an Apache Kafka or RabbitMQ publisher, allowing components like the Audit Log to run on entirely separate servers.
+
+---
+
 ## 🔮 Future Scope & Enhancements
 
 While the core British Auction engine is highly functional, the platform is designed to scale with the following future enhancements:
@@ -166,6 +178,8 @@ While the core British Auction engine is highly functional, the platform is desi
 2. **Role-Based Authentication (Spring Security + JWT):** Enforcing strict access controls where only authenticated Buyers can create RFQs, and authenticated Suppliers can only bid on RFQs they are invited to.
 
 3. **Redis Caching Layer:** Implementing a distributed cache (like Redis) for the `SupplierRankingService` to drastically reduce PostgreSQL load during intense, high-frequency bidding wars in the final seconds of an auction.
+
+4. **Event Streaming / Message Brokers (Apache Kafka):** Transitioning from Spring's internal `ApplicationEventPublisher` to a distributed message broker like Kafka or RabbitMQ. This will prepare the system for a true microservices architecture, allowing the core bidding engine and the audit log service to run on completely separate infrastructure.
 
 ---
 

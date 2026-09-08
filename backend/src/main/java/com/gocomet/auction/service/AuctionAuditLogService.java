@@ -82,15 +82,15 @@ public class AuctionAuditLogService {
     @EventListener
     public void onAuctionExtended(AuctionExtendedEvent event) {
         logEvent(
-        event.getRfq(),
-        null,
-        ActivityEventType.AUCTION_EXTENDED,
-        event.getReason(),
-        event.getPreviousCloseTime(),
-        event.getNewCloseTime(),
-        null,
-        null
-    );
+            event.getRfq(),
+            null,
+            ActivityEventType.AUCTION_EXTENDED,
+            event.getReason(),
+            event.getPreviousCloseTime(),
+            event.getNewCloseTime(),
+            null,
+            null
+        );
     }
 
     private AuctionActivityLogResponseDto mapToResponseDto(AuctionActivityLogEntity entity) {

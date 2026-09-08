@@ -27,7 +27,6 @@ public class SupplierRankingService {
     public BidSubmissionContext calculateAndAssignRankings(
     RfqEntity rfq, QuoteEntity newQuote, List<QuoteEntity> existingQuotes) {
 
-        Map<String, QuoteEntity> previousBestPerCarrier = getBestQuotePerCarrier(existingQuotes);
         QuoteEntity previousL1 = existingQuotes.isEmpty() ? null : existingQuotes.get(0);
 
         List<QuoteEntity> allQuotes = new ArrayList<>(existingQuotes);
@@ -57,7 +56,6 @@ public class SupplierRankingService {
         if (existingQuotes.isEmpty()) {
             anyRankChanged = true;
         } else if (newQuoteRank < allQuotes.size()) {
-
             anyRankChanged = true;
         }
 
@@ -82,16 +80,5 @@ public class SupplierRankingService {
         }
         quoteRepository.saveAll(quotes);
         log.debug(LogMessageConstants.LOG_RANKINGS_RECALCULATED, rfqId, quotes.size());
-    }
-
-    private Map<String, QuoteEntity> getBestQuotePerCarrier(List<QuoteEntity> quotes) {
-        Map<String, QuoteEntity> bestMap = new HashMap<>();
-        for (QuoteEntity q : quotes) {
-            String carrier = q.getCarrierName().trim().toLowerCase();
-            if (!bestMap.containsKey(carrier) || q.getTotalAmount().compareTo(bestMap.get(carrier).getTotalAmount()) < 0) {
-                bestMap.put(carrier, q);
-            }
-        }
-        return bestMap;
     }
 }

@@ -8,7 +8,6 @@ import com.gocomet.auction.enums.ExtensionTriggerType;
 import com.gocomet.auction.exception.InvalidRfqTimelineException;
 import com.gocomet.auction.repository.QuoteRepository;
 import com.gocomet.auction.repository.RfqRepository;
-import com.gocomet.auction.service.impl.RfqManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,11 +40,11 @@ class RfqManagementServiceTest {
     @Mock
     private AuctionExtensionService extensionService;
 
-    private RfqManagementServiceImpl rfqManagementService;
+    private RfqManagementService rfqManagementService;
 
     @BeforeEach
     void setUp() {
-        rfqManagementService = new RfqManagementServiceImpl(
+        rfqManagementService = new RfqManagementService(
         rfqRepository, quoteRepository, auditLogService, extensionService);
     }
 

@@ -4,7 +4,6 @@ import com.gocomet.auction.dto.event.BidSubmissionContext;
 import com.gocomet.auction.entity.QuoteEntity;
 import com.gocomet.auction.entity.RfqEntity;
 import com.gocomet.auction.repository.QuoteRepository;
-import com.gocomet.auction.service.impl.SupplierRankingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,11 +25,11 @@ class SupplierRankingServiceTest {
     @Mock
     private QuoteRepository quoteRepository;
 
-    private SupplierRankingServiceImpl rankingService;
+    private SupplierRankingService rankingService;
 
     @BeforeEach
     void setUp() {
-        rankingService = new SupplierRankingServiceImpl(quoteRepository);
+        rankingService = new SupplierRankingService(quoteRepository);
     }
 
     @Test

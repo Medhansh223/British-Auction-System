@@ -14,7 +14,6 @@ import com.gocomet.auction.exception.QuoteValidationException;
 import com.gocomet.auction.exception.ResourceNotFoundException;
 import com.gocomet.auction.repository.QuoteRepository;
 import com.gocomet.auction.repository.RfqRepository;
-import com.gocomet.auction.service.impl.QuoteSubmissionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +51,7 @@ public class QuoteSubmissionServiceTest {
     private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
-    private QuoteSubmissionServiceImpl quoteSubmissionService;
+    private QuoteSubmissionService quoteSubmissionService;
 
     private RfqEntity validRfq;
     private SubmitQuoteRequestDto validRequest;

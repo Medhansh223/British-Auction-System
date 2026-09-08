@@ -7,7 +7,6 @@ import com.gocomet.auction.entity.RfqEntity;
 import com.gocomet.auction.enums.AuctionStatus;
 import com.gocomet.auction.enums.ExtensionTriggerType;
 import com.gocomet.auction.repository.RfqRepository;
-import com.gocomet.auction.service.impl.AuctionExtensionServiceImpl;
 import com.gocomet.auction.factory.ExtensionStrategyFactory;
 import com.gocomet.auction.strategy.AnyBidExtensionStrategy;
 import com.gocomet.auction.strategy.AnyRankChangeExtensionStrategy;
@@ -40,7 +39,7 @@ class AuctionExtensionServiceTest {
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
-    private AuctionExtensionServiceImpl extensionService;
+    private AuctionExtensionService extensionService;
 
     @BeforeEach
     void setUp() {
@@ -49,7 +48,7 @@ class AuctionExtensionServiceTest {
         new AnyRankChangeExtensionStrategy(),
         new LowestBidderChangeExtensionStrategy()
 ));
-        extensionService = new AuctionExtensionServiceImpl(strategyFactory, rfqRepository, eventPublisher);
+        extensionService = new AuctionExtensionService(strategyFactory, rfqRepository, eventPublisher);
     }
 
     @Test

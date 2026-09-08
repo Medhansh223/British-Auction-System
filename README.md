@@ -153,7 +153,7 @@ The backend architecture rigorously adheres to the five core principles of objec
 
 4. **Interface Segregation Principle (ISP):** Instead of bloated interfaces, the application relies on focused, purpose-specific Spring Data interfaces (`QuoteRepository`, `RfqRepository`) keeping the persistence contracts tight and clean.
 
-5. **Dependency Inversion Principle (DIP):** High-level business logic modules (like `QuoteSubmissionService`) do not depend on low-level modules. Instead, they depend entirely on abstractions (interfaces) injected via Spring's IoC container (Constructor Injection).
+5. **Dependency Inversion Principle (DIP):** High-level modules (like `RfqController`) do not depend on low-level modules. Instead, they depend entirely on abstractions or injected beans via Spring's IoC container (Constructor Injection). *Note: The Service layer was recently flattened to use concrete classes for simplicity and to remove boilerplate, but can be easily abstracted back into interfaces if multiple implementations are required.*
 
 ---
 
@@ -161,7 +161,7 @@ The backend architecture rigorously adheres to the five core principles of objec
 
 While the core British Auction engine is highly functional, the platform is designed to scale with the following future enhancements:
 
-1. **WebSockets (STOMP) for Real-Time Sync:** Transitioning from client-side polling/timers to a fully reactive WebSocket architecture. This will instantly push bid updates and timer extensions to all connected suppliers simultaneously.
+1. **Reintroducing Service Interfaces:** The current architecture uses a flattened service layer (concrete classes only) for simplicity and reduced boilerplate. If the system scales to require multiple implementations for services (e.g., distinguishing between different types of auctions like Dutch vs British), re-introducing `*Service` interfaces back into the architecture will be a beneficial next step.
 
 2. **Role-Based Authentication (Spring Security + JWT):** Enforcing strict access controls where only authenticated Buyers can create RFQs, and authenticated Suppliers can only bid on RFQs they are invited to.
 

@@ -127,7 +127,7 @@ export const App: React.FC = () => {
             <AlertCircle size={18} />
             <div>
               <strong>Backend Connection Notice:</strong> {errorMessage} (Ensure
-              Spring Boot backend is running on port 8080)
+              your backend API is running and accessible)
             </div>
           </div>
         )}

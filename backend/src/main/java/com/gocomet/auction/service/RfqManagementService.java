@@ -150,14 +150,16 @@ public class RfqManagementService {
 
     private void syncRfqStatusWithClock(RfqEntity rfq) {
         Instant now = Instant.now();
-        if (rfq.getStatus() == AuctionStatus.ACTIVE || rfq.getStatus() == AuctionStatus.EXTENDED) {
-            if (!now.isBefore(rfq.getForcedBidCloseTime())) {
-                rfq.setStatus(AuctionStatus.FORCE_CLOSED);
-                rfqRepository.save(rfq);
-            } else if (!now.isBefore(rfq.getBidCloseTime())) {
-                rfq.setStatus(AuctionStatus.CLOSED);
-                rfqRepository.save(rfq);
-            }
+        if ((rfq.getStatus() == AuctionStatus.ACTIVE || rfq.getStatus() == AuctionStatus.EXTENDED)
+                && !now.isBefore(rfq.getBidCloseTime())) {
+            
+            AuctionStatus finalStatus = rfq.getBidCloseTime().isBefore(rfq.getForcedBidCloseTime())
+                    ? AuctionStatus.CLOSED
+                    : AuctionStatus.FORCE_CLOSED;
+            
+            rfq.setStatus(finalStatus);
+            rfqRepository.save(rfq);
+            
         } else if (rfq.getStatus() == AuctionStatus.DRAFT && !now.isBefore(rfq.getBidStartTime())) {
             rfq.setStatus(AuctionStatus.ACTIVE);
             rfqRepository.save(rfq);

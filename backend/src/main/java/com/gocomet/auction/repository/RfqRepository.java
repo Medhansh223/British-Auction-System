@@ -20,9 +20,9 @@ public interface RfqRepository extends JpaRepository<RfqEntity, Long> {
 
     List<RfqEntity> findByStatusOrderByCreatedAtDesc(AuctionStatus status);
 
-    @Query("SELECT r FROM RfqEntity r WHERE r.status IN ('ACTIVE', 'EXTENDED') AND r.bidCloseTime <= :now")
+    @Query("SELECT r FROM RfqEntity r WHERE r.status IN ('ACTIVE', 'EXTENDED') AND r.bidCloseTime <= :now AND r.bidCloseTime < r.forcedBidCloseTime")
     List<RfqEntity> findExpiredActiveRfqs(@Param("now") Instant now);
 
-    @Query("SELECT r FROM RfqEntity r WHERE r.status IN ('ACTIVE', 'EXTENDED') AND r.forcedBidCloseTime <= :now")
+    @Query("SELECT r FROM RfqEntity r WHERE r.status IN ('ACTIVE', 'EXTENDED') AND r.bidCloseTime <= :now AND r.bidCloseTime >= r.forcedBidCloseTime")
     List<RfqEntity> findForceCloseExpiredRfqs(@Param("now") Instant now);
 }

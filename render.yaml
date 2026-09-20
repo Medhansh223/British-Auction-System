@@ -4,7 +4,8 @@ services:
     env: docker
     region: ohio
     plan: free
-    dockerContext: ./backend
+    dockerContext: .
+    dockerfilePath: backend/Dockerfile
     envVars:
       - key: SPRING_DATASOURCE_URL
         sync: false
